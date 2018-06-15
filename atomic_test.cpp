@@ -23,9 +23,7 @@ mutex mt;
 atomic_long atotal(0);
 
 // 点击函数
-// 不加锁：duration:25139ms
-// 加锁：duration:345849ms
-void click()
+void add1()
 {
     for(int i=0; i<1000000;++i)
     {
@@ -37,23 +35,16 @@ void click()
     }
 }
 
-// duration:65393ms
-void click_new()
-{
-    for(int i=0; i<1000000;++i)
-    {
-        atotal += 1;
-    }
-}
-
-
-int main(int argc, char* argv[])
+// 使用mutex多线程耗时统计
+// 不加锁：duration:25139ms
+// 加锁：duration:345849ms
+void test1()
 {
     // 计时开始
     clock_t start = clock();
     
-    thread task01(click_new);  
-    thread task02(click_new);  
+    thread task01(add1);  
+    thread task02(add1);  
     task01.join();  
     task02.join(); 
     
@@ -63,7 +54,88 @@ int main(int argc, char* argv[])
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     
     // 输出结果
+    cout<<"test1\n";
     cout<<"result:"<<total<<endl;
     cout<<"duration:"<<finish -start<<"ms"<<endl;
+}
+
+void add2()
+{
+    for(int i=0; i<1000000;++i)
+    {
+        atotal += 1;
+    }
+}
+
+// 原子类型在多程耗时统计
+// duration:65393ms
+void test2()
+{
+    // 计时开始
+    clock_t start = clock();
+    
+    thread task01(add2);  
+    thread task02(add2);  
+    task01.join();  
+    task02.join(); 
+    
+    // 计时结束
+    clock_t finish = clock();
+    
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    
+    // 输出结果
+    cout<<"test2\n";
+    cout<<"result:"<<total<<endl;
+    cout<<"duration:"<<finish -start<<"ms"<<endl;
+}
+
+typedef struct foo_tt
+{
+    int foo;
+    int bar;
+}foo_t;
+
+std::atomic<foo_t> foo;
+
+// 使用结构体方式，还不知道如何测试
+#if 0
+void add3()
+{
+    for(int i=0; i<1000000;++i)
+    {
+        foo.foo++;
+        foo.bar++;
+    }
+}
+
+void test3()
+{
+    // 计时开始
+    clock_t start = clock();
+    
+    thread task01(add3);  
+    thread task02(add3);  
+    task01.join();  
+    task02.join(); 
+    
+    // 计时结束
+    clock_t finish = clock();
+    
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    
+    // 输出结果
+    cout<<"test3\n";
+    cout<<"result:"<<foo.foo<<" " << foo.bar << endl;
+    cout<<"duration:"<<finish -start<<"ms"<<endl;
+}
+#endif
+
+int main(int argc, char* argv[])
+{
+    test1();
+    test2();
+    test3();
+    
     return 0;
 }

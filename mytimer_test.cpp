@@ -1,11 +1,14 @@
 /**
-g++ -Wall -std=c++11 main.cpp 
-*/
+耗时统计类
 
-#include "mytimer.h"
+g++ -Wall -std=c++11 main.cpp 
+
+命名空间太长了。。。
+*/
 
 #include <iostream>
 #include <unistd.h>
+#include "mytimer.h"
 
 int main(int argc, char* argv[])
 {
@@ -14,10 +17,7 @@ int main(int argc, char* argv[])
     CTimer t;
     
     sleep(1);
-    t.reset();
-    std::cout << "time is:" << t.times() << std::endl;
-    std::cout << "time is:" << t.elapsed_nano() << std::endl;
-    std::cout << "time is:" << t.elapsed_micro() << std::endl;
     
+    std::cout << "time is:" << t.times() << std::endl;
     return 0;
 }

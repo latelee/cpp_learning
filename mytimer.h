@@ -15,42 +15,42 @@ public:
     void reset() { m_begin = std::chrono::high_resolution_clock::now(); }
 
     //默认输出毫秒
-    double times() const
+    double ms() const
     {
       return std::chrono::duration_cast<std::chrono::duration<double>>
              (std::chrono::high_resolution_clock::now() - m_begin).count();
     }
 
     //微秒
-    int64_t elapsed_micro() const
+    int64_t us() const
     {
         return std::chrono::duration_cast<std::chrono::microseconds>
                (std::chrono::high_resolution_clock::now() - m_begin).count();
     }
 
     //纳秒
-    int64_t elapsed_nano() const
+    int64_t ns() const
     {
         return std::chrono::duration_cast<std::chrono::nanoseconds>
                (std::chrono::high_resolution_clock::now() - m_begin).count();
     }
 
     //秒
-    int64_t elapsed_seconds() const
+    int64_t s() const
     {
         return std::chrono::duration_cast<std::chrono::seconds>
                (std::chrono::high_resolution_clock::now() - m_begin).count();
     }
 
     //分
-    int64_t elapsed_minutes() const
+    int64_t m() const
     {
         return std::chrono::duration_cast<std::chrono::minutes>
                (std::chrono::high_resolution_clock::now() - m_begin).count();
     }
 
     //时
-    int64_t elapsed_hours() const
+    int64_t h() const
     {
         return std::chrono::duration_cast<std::chrono::hours>
                (std::chrono::high_resolution_clock::now() - m_begin).count();
